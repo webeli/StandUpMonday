@@ -1,32 +1,47 @@
 import React, { Component } from 'react';
-import { browserHistory } from 'react-router';
 import { observer } from 'mobx-react';
 import StartStore from './Start.Store';
 
 @observer
 export default class Start extends Component {
-  findRoom() {
-    const value = document.querySelector('.roomText').value;
-    //TODO: validate against Firebase
-    if (value === "1") {
-      StartStore.teamFound = true;
-    }
-    //browserHistory.push(`/team/${value}`);
+  findRoom(e) {
+    e.preventDefault();
+    StartStore.roomExists(StartStore.roomName);
   }
-  createRoom() {
-
+  createRoom(e) {
+    if (e) {
+      e.preventDefault();
+    }
+    StartStore.createRoom(StartStore.roomName);
+  }
+  handleChangeInput(e) {
+    StartStore.roomName = e.target.value;
+    StartStore.notFoundMessage = false;
   }
   render() {
-    console.log(StartStore.teamFound,'store');
     return (
       <div>
-        <h1>Enter room</h1>
-        <input className="roomText" type="text" />
-        <button onClick={() => this.findRoom()}>Go</button>
-        {StartStore.teamFound && <p>This room does not exist <button onClick={() => console.log("create...")}>Create</button></p>}
-        <h1>Create new room</h1>
-        <input className="newRoomText" type="text" />
-        <button>Go</button>
+        <h1>Enter Room</h1>
+        <form onSubmit={(e) => this.findRoom(e)}>
+          <input 
+            value={StartStore.roomName}
+            onChange={(e) => this.handleChangeInput(e)}
+            type="text"
+            required/>
+          <button type="submit">Enter</button>
+        </form>
+        {StartStore.notFoundMessage &&
+          <p>This room does not exist <button onClick={() => this.createRoom()}>Create</button></p>}
+        <h1>Create Room</h1>
+        <form onSubmit={(e) => this.createRoom(e)}>
+          <input
+            value={StartStore.roomName}
+            onChange={(e) => this.handleChangeInput(e)}
+            className="newRoomText"
+            type="text"
+            required />
+          <button type="submit">Create</button>
+        </form>
       </div>
     );
   }
