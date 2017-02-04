@@ -1,4 +1,4 @@
-import { autorun, observable } from 'mobx';
+import { observable } from 'mobx';
 import { dbRoom } from '../Common/WebAPIUtils';
 import { browserHistory } from 'react-router';
 
@@ -23,10 +23,6 @@ class StartStore {
     }
 }
 
-var store = window.store = new StartStore();
+let store = new StartStore();
 
 export default store;
-
-autorun(() => {
-    //console.log(store.roomName);
-});
