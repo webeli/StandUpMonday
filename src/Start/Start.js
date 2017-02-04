@@ -1,20 +1,20 @@
 import React, { Component } from 'react';
-import { observer } from 'mobx-react';
-import StartStore from './Start.Store';
+import { observer, inject } from 'mobx-react';
 
+@inject ('globalStore', 'startStore')
 @observer
 export default class Start extends Component {
   findRoom(e) {
     e.preventDefault();
-    StartStore.roomExists(StartStore.roomName);
+    this.props.startStore.roomExists(this.props.startStore.roomName);
   }
   createRoom(e) {
     if (e) { e.preventDefault(); }
-    StartStore.createRoom(StartStore.roomName);
+    this.props.startStore.createRoom(this.props.startStore.roomName);
   }
   handleChangeInput(e) {
-    StartStore.roomName = e.target.value;
-    StartStore.notFoundMessage = false;
+    this.props.startStore.roomName = e.target.value;
+    this.props.startStore.notFoundMessage = false;
   }
   render() {
     return (
@@ -22,18 +22,18 @@ export default class Start extends Component {
         <h1>Enter Room</h1>
         <form onSubmit={(e) => this.findRoom(e)}>
           <input
-            value={StartStore.roomName}
+            value={this.props.startStore.roomName}
             onChange={(e) => this.handleChangeInput(e)}
             type="text"
             required />
           <button type="submit">Enter</button>
         </form>
-        {StartStore.notFoundMessage &&
+        {this.props.startStore.notFoundMessage &&
           <p>This room does not exist <button onClick={() => this.createRoom()}>Create</button></p>}
         <h1>Create Room</h1>
         <form onSubmit={(e) => this.createRoom(e)}>
           <input
-            value={StartStore.roomName}
+            value={this.props.startStore.roomName}
             onChange={(e) => this.handleChangeInput(e)}
             className="newRoomText"
             type="text"
