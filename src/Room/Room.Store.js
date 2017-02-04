@@ -9,12 +9,12 @@ class RoomStore {
 
   checkRoom(roomName) {
     dbRoom.child(roomName).once('value', (snap) => {
-        if (snap.exists()) {
-          this.roomName = roomName;
-          this.roomFound = true;
-        } else {
-          browserHistory.push(`/`);
-        }
+      if (snap.exists()) {
+        this.roomName = roomName;
+        this.roomFound = true;
+      } else {
+        browserHistory.push(`/`);
+      }
     });
   }
 
@@ -26,6 +26,12 @@ class RoomStore {
     }
 
     dbRoom.child(this.roomName).child("attendees").child(user.uid).set(myUser);
+  }
+
+  onAttendees() {
+    dbRoom.child(this.roomName).child("attendees").on("child_added", (snap) => {
+      this.attendees.push({key: snap.key, value: snap.val()});  
+    });
   }
 }
 
