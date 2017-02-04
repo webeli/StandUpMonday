@@ -9,9 +9,7 @@ export default class Start extends Component {
     StartStore.roomExists(StartStore.roomName);
   }
   createRoom(e) {
-    if (e) {
-      e.preventDefault();
-    }
+    if (e) { e.preventDefault(); }
     StartStore.createRoom(StartStore.roomName);
   }
   handleChangeInput(e) {
@@ -23,11 +21,11 @@ export default class Start extends Component {
       <div>
         <h1>Enter Room</h1>
         <form onSubmit={(e) => this.findRoom(e)}>
-          <input 
+          <input
             value={StartStore.roomName}
             onChange={(e) => this.handleChangeInput(e)}
             type="text"
-            required/>
+            required />
           <button type="submit">Enter</button>
         </form>
         {StartStore.notFoundMessage &&
