@@ -7,8 +7,9 @@ class GlobalStore {
 
   checkAuth() {
     fbAuth.onAuthStateChanged((user) => {
-      console.log('user', user)
+      //console.log('user', user)
       if (user) {
+        this.user = user;
         this.loggedIn = true;
       } else {
         this.loggedIn = false;
