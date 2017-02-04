@@ -7,17 +7,19 @@ class StartStore {
     @observable notFoundMessage = false;
 
     roomExists(roomName) {
-        dbRoom.child(roomName).once('value', (snap) => {
+        const name = roomName.toLowerCase();
+        dbRoom.child(name).once('value', (snap) => {
             if (snap.exists()) {
-                browserHistory.push(`/room/${roomName}`);
+                browserHistory.push(`/room/${name}`);
             } else {
                 this.notFoundMessage = true;
             }
         })
     }
     createRoom(roomName) {
-        dbRoom.child(roomName).set({name: roomName});
-        browserHistory.push(`/room/${roomName}`);
+        const name = roomName.toLowerCase();
+        dbRoom.child(name).set({name: name});
+        browserHistory.push(`/room/${name}`);
     }
 }
 
