@@ -1,0 +1,15 @@
+{
+  "rules": {
+    "room": {
+      ".read": false,
+      ".write": false,
+      "$room": {
+        ".read": true,
+        ".write": true,
+        "attendees": {
+          ".indexOn": "standingDate"
+        }
+      }
+    }
+  }
+}
