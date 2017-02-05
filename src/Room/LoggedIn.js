@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
 import { getToday } from './Room.Store';
 
-import { Button, Badge, Row, Col, Layout } from 'antd';
-const { Header, Footer, Content } = Layout;
+import { Button, Badge, Row, Col } from 'antd';
 
 @inject('globalStore', 'roomStore', 'routing')
 @observer
@@ -34,7 +33,7 @@ class LoggedIn extends Component {
       total = isStanding ? total + 1 : total;
 
       return (
-        <Col span={14} offset={10} key={key} style={{textAlign: 'left'}}>
+        <Col span={14} offset={10} key={key} style={{ textAlign: 'left' }}>
           <Badge status={isStanding ? "success" : "error"} />
           <span className="head-example">{attendees[key].displayName}</span>
         </Col>
@@ -42,30 +41,24 @@ class LoggedIn extends Component {
     });
 
     return this.props.roomStore.roomFound && (
-      <Layout style={{minHeight: '100vh'}}>
-        <Header></Header>
-        <Content>
-          <Row type="flex" justify="space-between" align="middle" style={{textAlign: 'center', marginTop:'20px'}}>
-            <Col span={8}>
-              {mappedAttendees}
-            </Col>
-            <Col span={8}>
-              {this.props.roomStore.standingDate !== getToday() &&
-                <Button type="primary" onClick={() => this.standingUp()}>I'M STANDING!</Button>}
+      <Row type="flex" justify="space-between" align="middle" style={{ textAlign: 'center', marginTop: '20px' }}>
+        <Col span={8}>
+          {mappedAttendees}
+        </Col>
+        <Col span={8}>
+          {this.props.roomStore.standingDate !== getToday() &&
+            <Button type="primary" onClick={() => this.standingUp()}>I'M STANDING!</Button>}
 
-              {this.props.roomStore.standingDate === getToday() && this.props.roomStore.sittingDate !== getToday() &&
-                <Button type="danger" size="large" onClick={() => this.sittingDown()}>I'M SITTING!</Button>}
+          {this.props.roomStore.standingDate === getToday() && this.props.roomStore.sittingDate !== getToday() &&
+            <Button type="danger" size="large" onClick={() => this.sittingDown()}>I'M SITTING!</Button>}
 
-              {this.props.roomStore.standingDate === getToday() && this.props.roomStore.sittingDate === getToday() &&
-                <p>Good work today!</p>}
-            </Col>
-            <Col span={8}>
-              {total} Attendees left
-            </Col>
-          </Row>
-        </Content>
-        <Footer></Footer>
-      </Layout>
+          {this.props.roomStore.standingDate === getToday() && this.props.roomStore.sittingDate === getToday() &&
+            <p>Good work today!</p>}
+        </Col>
+        <Col span={8}>
+          {total} Attendees left
+        </Col>
+      </Row>
     );
   }
 }

@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
 
+import { Layout } from 'antd';
+const { Header, Footer, Content } = Layout;
+
 import LoggedIn from './LoggedIn';
 import NotLoggedIn from './NotLoggedIn';
 
@@ -20,9 +23,13 @@ class Room extends Component {
 
   render() {
     return this.props.globalStore.loggedIn !== null && this.props.roomStore.roomFound && (
-      <div>
-        {this.props.globalStore.loggedIn ? <LoggedIn /> : <NotLoggedIn />}
-      </div>
+      <Layout style={{ minHeight: '100vh' }}>
+        <Header></Header>
+        <Content>
+          {this.props.globalStore.loggedIn ? <LoggedIn /> : <NotLoggedIn />}
+        </Content>
+        <Footer></Footer>
+      </Layout>
     );
   }
 }

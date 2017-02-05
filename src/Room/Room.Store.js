@@ -19,6 +19,8 @@ class RoomStore {
   @observable attendees = null;
   @observable dateToday = getToday();
 
+  @observable displayNewUserForm = false;
+
   checkRoom(roomName) {
     dbRoom.child(roomName).once('value', (snap) => {
       if (snap.exists()) {

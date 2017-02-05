@@ -3,7 +3,7 @@ import { observer, inject } from 'mobx-react';
 import { Form, Icon, Input, Button, Checkbox, Col } from 'antd';
 const FormItem = Form.Item;
 
-@inject('globalStore')
+@inject('globalStore', 'roomStore')
 @observer
 class NotLoggedIn extends Component {
 
@@ -37,29 +37,30 @@ class NotLoggedIn extends Component {
           <FormItem>
             <Checkbox>Remember me</Checkbox>
             <a style={{ float: 'right' }}>Forgot password</a>
-            <Button type="primary" htmlType="submit" style={{ width: '100%' }}>
+            <Button htmlType="submit" style={{ width: '100%' }}>
               Log in
             </Button>
-            Or <a>register now!</a>
+            Or <a onClick={() => this.props.roomStore.displayNewUserForm = true}>register now!</a>
           </FormItem>
         </Form>
 
-        <Form onSubmit={(e) => this.createUser(e)} style={{ maxWidth: '300px' }}>
-          <FormItem>
-            <Input addonBefore={<Icon type="user" />} type="text" placeholder="Display Name" className="newDisplayNameInput" required />
-          </FormItem>
-          <FormItem>
-            <Input addonBefore={<Icon type="mail" />} type="email" placeholder="Email" className="newEmailInput" required />
-          </FormItem>
-          <FormItem>
-            <Input addonBefore={<Icon type="lock" />} type="password" placeholder="Password" className="newPassInput" required />
-          </FormItem>
-          <FormItem>
-            <Button type="primary" htmlType="submit" style={{ width: '100%' }}>
-              Create user
-            </Button>
-          </FormItem>
-        </Form>
+        {this.props.roomStore.displayNewUserForm &&
+          <Form onSubmit={(e) => this.createUser(e)} style={{ maxWidth: '300px' }}>
+            <FormItem>
+              <Input addonBefore={<Icon type="user" />} type="text" placeholder="Display Name" className="newDisplayNameInput" required />
+            </FormItem>
+            <FormItem>
+              <Input addonBefore={<Icon type="mail" />} type="email" placeholder="Email" className="newEmailInput" required />
+            </FormItem>
+            <FormItem>
+              <Input addonBefore={<Icon type="lock" />} type="password" placeholder="Password" className="newPassInput" required />
+            </FormItem>
+            <FormItem>
+              <Button htmlType="submit" style={{ width: '100%' }}>
+                Create user
+              </Button>
+            </FormItem>
+          </Form>}
       </Col>
     );
   }

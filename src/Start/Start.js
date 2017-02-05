@@ -2,27 +2,8 @@ import React, { Component } from 'react';
 import { observer } from 'mobx-react';
 import StartStore from './Start.Store';
 
-import { styled } from 'styletron-react';
-
-const Row = styled('div', {
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-});
-
-const Input = styled('input', {
-  padding: '5px',
-  borderRadius: '5px',
-  border: '1px solid #CCC',
-  marginRight: '5px',
-});
-
-const Button = styled('button', {
-  padding: '5px',
-  borderRadius: '5px',
-  background: '#FFF',
-  border: '1px solid #CCC',
-});
+import { Button, Col, Layout, Input, Form } from 'antd';
+const { Header, Footer, Content } = Layout;
 
 @observer
 export default class Start extends Component {
@@ -42,28 +23,42 @@ export default class Start extends Component {
   }
   render() {
     return (
-      <Row>
-        <h1>Enter Room</h1>
-        <form onSubmit={(e) => this.findRoom(e)}>
-          <Input
-            value={StartStore.roomName}
-            onChange={(e) => this.handleInputChange(e)}
-            type="text"
-            required />
-          <Button type="submit">Enter</Button>
-        </form>
-        {StartStore.notFoundMessage &&
-          <p>This room does not exist <Button onClick={() => this.createRoom()}>Create</Button></p>}
-        <h1>Create Room</h1>
-        <form onSubmit={(e) => this.createRoom(e)}>
-          <Input
-            value={StartStore.roomName}
-            onChange={(e) => this.handleInputChange(e)}
-            type="text"
-            required />
-          <Button type="submit">Create</Button>
-        </form>
-      </Row>
+      <Layout style={{ minHeight: '100vh' }}>
+        <Header></Header>
+        <Content>
+          <Col offset={8} span={8} style={{ marginTop: '20px', textAlign:'center' }}>
+            <h1>Enter Room</h1>
+            <Form inline onSubmit={(e) => this.findRoom(e)}>
+              <Form.Item>
+                <Input
+                  value={StartStore.roomName}
+                  onChange={(e) => this.handleInputChange(e)}
+                  type="text"
+                  required />
+              </Form.Item>
+              <Form.Item>
+                <Button htmlType="submit">Enter</Button>
+              </Form.Item>
+            </Form>
+            {StartStore.notFoundMessage &&
+              <p style={{ marginTop:'10px' }}>This room does not exist <Button onClick={() => this.createRoom()}>Create</Button></p>}
+            <h1>Create Room</h1>
+            <Form inline onSubmit={(e) => this.createRoom(e)}>
+              <Form.Item>
+                <Input
+                  value={StartStore.roomName}
+                  onChange={(e) => this.handleInputChange(e)}
+                  type="text"
+                  required />
+              </Form.Item>
+              <Form.Item>
+                <Button htmlType="submit">Create</Button>
+              </Form.Item>
+            </Form>
+          </Col>
+        </Content>
+        <Footer></Footer>
+      </Layout>
     );
   }
 }
