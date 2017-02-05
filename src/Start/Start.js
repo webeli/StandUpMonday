@@ -36,7 +36,7 @@ export default class Start extends Component {
     }
     StartStore.createRoom(StartStore.roomName);
   }
-  handleChangeInput(e) {
+  handleInputChange(e) {
     StartStore.roomName = e.target.value;
     StartStore.notFoundMessage = false;
   }
@@ -47,7 +47,7 @@ export default class Start extends Component {
         <form onSubmit={(e) => this.findRoom(e)}>
           <Input
             value={StartStore.roomName}
-            onChange={(e) => this.handleChangeInput(e)}
+            onChange={(e) => this.handleInputChange(e)}
             type="text"
             required />
           <Button type="submit">Enter</Button>
@@ -58,7 +58,7 @@ export default class Start extends Component {
         <form onSubmit={(e) => this.createRoom(e)}>
           <Input
             value={StartStore.roomName}
-            onChange={(e) => this.handleChangeInput(e)}
+            onChange={(e) => this.handleInputChange(e)}
             className="newRoomText"
             type="text"
             required />
