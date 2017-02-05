@@ -2,6 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 
+import 'antd/dist/antd.css';
+
 import GlobalStore from './Global.Store';
 import RoomStore from './Room/Room.Store';
 import StartStore from './Start/Start.Store';
