@@ -14,7 +14,7 @@ class RoomStore {
   @observable standingDate;
   @observable sittingDate;
 
-  @observable roomName = '';
+  @observable roomName = ''; // Try not to use in Store Methods, sometimes doesn't seem to get in sync on room changes (use prop from component instead).
   @observable roomFound = false;
   @observable attendees = null;
   @observable dateToday = getToday();
@@ -60,17 +60,17 @@ class RoomStore {
       this.attendees = snap.val();
     });
 
-    dbRoom.child(this.roomName).child("attendees").on("child_changed", (snap) => {
+    db.child(pathname).child("attendees").on("child_changed", (snap) => {
       // print out history
     })
   }
 
-  sittingDown(user) {
-    dbRoom.child(this.roomName).child("attendees").child(user.uid).update({ sittingDate: this.dateToday });
+  sittingDown(user, pathname) {
+    db.child(pathname).child("attendees").child(user.uid).update({ sittingDate: this.dateToday });
   }
 
-  standingUp(user) {
-    dbRoom.child(this.roomName).child("attendees").child(user.uid).update({ standingDate: this.dateToday });
+  standingUp(user, pathname) {
+    db.child(pathname).child("attendees").child(user.uid).update({ standingDate: this.dateToday });
   }
 }
 

@@ -37,11 +37,11 @@ class LoggedIn extends Component {
   }
 
   standingUp() {
-    this.props.roomStore.standingUp(this.props.globalStore.user);
+    this.props.roomStore.standingUp(this.props.globalStore.user, this.props.routing.location.pathname);
   }
 
   sittingDown() {
-    this.props.roomStore.sittingDown(this.props.globalStore.user);
+    this.props.roomStore.sittingDown(this.props.globalStore.user, this.props.routing.location.pathname);
   }
 
   render() {
