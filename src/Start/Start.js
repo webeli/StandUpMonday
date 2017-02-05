@@ -59,7 +59,6 @@ export default class Start extends Component {
           <Input
             value={StartStore.roomName}
             onChange={(e) => this.handleInputChange(e)}
-            className="newRoomText"
             type="text"
             required />
           <Button type="submit">Create</Button>
