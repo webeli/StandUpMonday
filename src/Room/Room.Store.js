@@ -46,8 +46,10 @@ class RoomStore {
 
   onAttendee(user) {
     dbRoom.child(this.roomName).child("attendees").child(user.uid).on("value", (attendee) => {
-      this.standingDate = attendee.val().standingDate;
-      this.sittingDate = attendee.val().sittingDate;
+      if (attendee.val()) {
+        this.standingDate = attendee.val().standingDate;
+        this.sittingDate = attendee.val().sittingDate;
+      }
     });
   }
 

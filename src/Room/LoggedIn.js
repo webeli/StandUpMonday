@@ -45,10 +45,10 @@ class LoggedIn extends Component {
   }
 
   render() {
-    const attendees = this.props.roomStore.attendees;
+    const attendees = this.props.roomStore.attendees || null;
 
     let total = 0;
-    const mappedAttendees = Object.keys(attendees).map((key) => {
+    const mappedAttendees = attendees && Object.keys(attendees).map((key) => {
 
       const isStanding = (attendees[key].standingDate === getToday() && attendees[key].sittingDate !== getToday());
       total = isStanding ? total+1 : total;
