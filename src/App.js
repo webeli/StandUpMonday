@@ -9,9 +9,9 @@ class App extends Component {
   render() {
     return (
       <Router history={browserHistory}>
-        <Route path='/' component={Start}/>
-        <Route path='room/:id' component={Room}/>
-        <Route path='profile' component={Profile}/>
+        <Route path='/' component={Start} />
+        <Route path='room/:id' component={Room} />
+        <Route path='profile' component={Profile} />
       </Router>
     );
   }
