@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
-
+import { getToday } from './Room.Store';
 const styles = {
   row: {
     display: 'flex',
@@ -30,16 +30,22 @@ class LoggedIn extends Component {
     props.roomStore.onAttendees();
   }
 
-  setSelfToStand() {
-    this.props.roomStore.setSelfToStand(this.props.globalStore.user);
+  standingUp() {
+    this.props.roomStore.standingUp(this.props.globalStore.user);
+  }
+
+  sittingDown() {
+    this.props.roomStore.sittingDown(this.props.globalStore.user);
   }
 
   render() {
 
-    const mappedAttendees = this.props.roomStore.attendees.map((attendee) => {
+    const attendees = this.props.roomStore.attendees;
+    
+    const mappedAttendees = Object.keys(attendees).map((key) => {
       return (
-        <li key={attendee.key}>
-          {attendee.value.displayName}
+        <li key={key}>
+          {attendees[key].displayName}
         </li>
       );
     })
@@ -55,7 +61,14 @@ class LoggedIn extends Component {
           <div>
             00:00
           </div>
-          <button style={styles.button} onClick={() => this.setSelfToStand()}>I'm STANDING!</button>
+          {this.props.roomStore.standingDate !== getToday() &&
+            <button style={styles.button} onClick={() => this.standingUp()}>I'M STANDING!</button>}
+
+          {this.props.roomStore.standingDate === getToday() && this.props.roomStore.sittingDate !== getToday() &&
+            <button style={styles.button} onClick={() => this.sittingDown()}>I'M SITTING!</button>}
+
+          {this.props.roomStore.standingDate === getToday() && this.props.roomStore.sittingDate === getToday() &&
+            <p>Good work today!</p>}
         </div>
         <div>
           asd
