@@ -2,25 +2,27 @@ import React, { Component } from 'react';
 import { observer } from 'mobx-react';
 import StartStore from './Start.Store';
 
-const styles = {
-  row: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-  },
-  input: {
-    padding: 5,
-    borderRadius: 5,
-    border: '1px solid #CCC',
-    marginRight: 5,
-  },
-  button: {
-    padding: 5,
-    borderRadius: 5,
-    background: '#FFF',
-    border: '1px solid #CCC',
-  }
-}
+import { styled } from 'styletron-react';
+
+const Row = styled('div', {
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+});
+
+const Input = styled('input', {
+  padding: '5px',
+  borderRadius: '5px',
+  border: '1px solid #CCC',
+  marginRight: '5px',
+});
+
+const Button = styled('button', {
+  padding: '5px',
+  borderRadius: '5px',
+  background: '#FFF',
+  border: '1px solid #CCC',
+});
 
 @observer
 export default class Start extends Component {
@@ -40,31 +42,29 @@ export default class Start extends Component {
   }
   render() {
     return (
-      <div style={styles.row}>
+      <Row>
         <h1>Enter Room</h1>
         <form onSubmit={(e) => this.findRoom(e)}>
-          <input
-            style={styles.input}
+          <Input
             value={StartStore.roomName}
             onChange={(e) => this.handleChangeInput(e)}
             type="text"
             required />
-          <button style={styles.button} type="submit">Enter</button>
+          <Button type="submit">Enter</Button>
         </form>
         {StartStore.notFoundMessage &&
-          <p>This room does not exist <button style={styles.button} onClick={() => this.createRoom()}>Create</button></p>}
+          <p>This room does not exist <Button onClick={() => this.createRoom()}>Create</Button></p>}
         <h1>Create Room</h1>
         <form onSubmit={(e) => this.createRoom(e)}>
-          <input
-            style={styles.input}
+          <Input
             value={StartStore.roomName}
             onChange={(e) => this.handleChangeInput(e)}
             className="newRoomText"
             type="text"
             required />
-          <button style={styles.button} type="submit">Create</button>
+          <Button type="submit">Create</Button>
         </form>
-      </div>
+      </Row>
     );
   }
 }
