@@ -34,13 +34,11 @@ class RoomStore {
 
   addToAttendees(user) {
     dbRoom.child(this.roomName).child("attendees").child(user.uid).once("value", (snap) => {
-      //if user doesn't exist, add him
       if (!snap.val()) {
         dbRoom.child(this.roomName).child("attendees").child(user.uid).set({
           displayName: user.displayName ? user.displayName : user.email
         });
       } else {
-        // set dates to observables
         this.standingDate = snap.val().standingDate;
         this.sittingDate = snap.val().sittingDate;
       }
@@ -49,15 +47,13 @@ class RoomStore {
 
   onAttendees() {
     dbRoom.child(this.roomName).child("attendees")
-    //.orderByChild("userDate").equalTo(this.dateToday)
+    .orderByChild("standingDate").equalTo(this.dateToday)
     .on("value", (snap) => {
-      // Empty
       this.attendees = snap.val();
     });
 
     dbRoom.child(this.roomName).child("attendees").on("child_changed", (snap) => {
       // print out history
-      console.log(snap.key);
     })
   }
 

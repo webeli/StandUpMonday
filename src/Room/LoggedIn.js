@@ -1,10 +1,15 @@
 import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
 import { getToday } from './Room.Store';
+
+import { Button, Badge } from 'antd';
+
+
 const styles = {
   row: {
     display: 'flex',
-    justifyContent: 'space-around'
+    justifyContent: 'space-around',
+    marginTop: '15px'
   },
   input: {
     padding: 5,
@@ -39,13 +44,14 @@ class LoggedIn extends Component {
   }
 
   render() {
-
+// -
     const attendees = this.props.roomStore.attendees;
-    
+
     const mappedAttendees = Object.keys(attendees).map((key) => {
       return (
         <li key={key}>
-          {(attendees[key].standingDate === getToday() && attendees[key].sittingDate !== getToday()) ? "(grön)" : "(röd)"} - {attendees[key].displayName}
+          <Badge status={(attendees[key].standingDate === getToday() && attendees[key].sittingDate !== getToday()) ? "success" : "error"} />
+          <span className="head-example">{attendees[key].displayName}</span>
         </li>
       );
     })
@@ -62,10 +68,10 @@ class LoggedIn extends Component {
             00:00
           </div>
           {this.props.roomStore.standingDate !== getToday() &&
-            <button style={styles.button} onClick={() => this.standingUp()}>I'M STANDING!</button>}
+            <Button type="primary" onClick={() => this.standingUp()}>I'M STANDING!</Button>}
 
           {this.props.roomStore.standingDate === getToday() && this.props.roomStore.sittingDate !== getToday() &&
-            <button style={styles.button} onClick={() => this.sittingDown()}>I'M SITTING!</button>}
+            <Button type="danger" size="large" onClick={() => this.sittingDown()}>I'M SITTING!</Button>}
 
           {this.props.roomStore.standingDate === getToday() && this.props.roomStore.sittingDate === getToday() &&
             <p>Good work today!</p>}
