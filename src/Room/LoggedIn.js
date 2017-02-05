@@ -31,7 +31,7 @@ class LoggedIn extends Component {
   }
 
   setSelfToStand() {
-    this.props.roomStore.setSelfToStand();
+    this.props.roomStore.setSelfToStand(this.props.globalStore.user);
   }
 
   render() {
