@@ -33,6 +33,7 @@ class LoggedIn extends Component {
     super(props);
     props.roomStore.addToAttendees(this.props.globalStore.user);
     props.roomStore.onAttendees();
+    props.roomStore.onAttendee(this.props.globalStore.user);
   }
 
   standingUp() {
@@ -44,7 +45,6 @@ class LoggedIn extends Component {
   }
 
   render() {
-// -
     const attendees = this.props.roomStore.attendees;
 
     const mappedAttendees = Object.keys(attendees).map((key) => {
