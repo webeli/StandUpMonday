@@ -47,14 +47,19 @@ class LoggedIn extends Component {
   render() {
     const attendees = this.props.roomStore.attendees;
 
+    let total = 0;
     const mappedAttendees = Object.keys(attendees).map((key) => {
+
+      const isStanding = (attendees[key].standingDate === getToday() && attendees[key].sittingDate !== getToday());
+      total = isStanding ? total+1 : total;
+
       return (
         <li key={key}>
-          <Badge status={(attendees[key].standingDate === getToday() && attendees[key].sittingDate !== getToday()) ? "success" : "error"} />
+          <Badge status={isStanding ? "success" : "error"} />
           <span className="head-example">{attendees[key].displayName}</span>
         </li>
       );
-    })
+    });
 
     return this.props.roomStore.roomFound && (
       <div style={styles.row}>
@@ -77,7 +82,7 @@ class LoggedIn extends Component {
             <p>Good work today!</p>}
         </div>
         <div>
-          asd
+            {total} Players left
         </div>
       </div>
     );
