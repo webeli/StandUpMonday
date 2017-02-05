@@ -32,7 +32,7 @@ class LoggedIn extends Component {
   constructor(props) {
     super(props);
     props.roomStore.addToAttendees(this.props.globalStore.user, this.props.routing.location.pathname);
-    props.roomStore.onAttendees(this.props.routing.location.pathname);
+    props.roomStore.onAttendees(this.props.routing.location.pathname, this.props.roomStore.dateToday);
     props.roomStore.onAttendee(this.props.globalStore.user, this.props.routing.location.pathname);
   }
 

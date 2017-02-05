@@ -55,8 +55,12 @@ class RoomStore {
     });
   }
 
-  onAttendees(pathname) {
-    db.child(pathname).child("attendees").on("value", (snap) => {
+  onAttendees(pathname, dateNow) {
+    db.child(pathname).child("attendees")
+    .orderByChild("standingDate")
+    .equalTo(dateNow)
+    .on("value", (snap) => {
+      console.log(snap.val());
       this.attendees = snap.val();
     });
 
