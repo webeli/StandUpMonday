@@ -9,8 +9,10 @@ var config = {
 };
 firebase.initializeApp(config);
 
+const db = firebase.database().ref();
+
 const dbRoom = firebase.database().ref('room');
 
 const fbAuth = firebase.auth();
 
-export { dbRoom, fbAuth }
+export { db, dbRoom, fbAuth }

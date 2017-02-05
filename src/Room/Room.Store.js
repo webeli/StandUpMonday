@@ -1,5 +1,5 @@
-import { observable } from 'mobx';
-import { dbRoom } from '../Common/WebAPIUtils';
+import { observable, autorun } from 'mobx';
+import { db, dbRoom } from '../Common/WebAPIUtils';
 import { browserHistory } from 'react-router';
 
 export function getToday() {
@@ -24,6 +24,7 @@ class RoomStore {
     dbRoom.child(roomName).once('value', (snap) => {
       if (snap.exists()) {
         this.roomName = roomName;
+        console.log('this.roomName',this.roomName);
         this.roomFound = true;
       } else {
         browserHistory.push(`/`);
@@ -53,11 +54,13 @@ class RoomStore {
     });
   }
 
-  onAttendees() {
-    dbRoom.child(this.roomName).child("attendees")
-      .orderByChild("standingDate").equalTo(this.dateToday)
-      .on("value", (snap) => {
+  onAttendees(pathname) {
+    console.log('pathname', pathname)
+    db.child(pathname).child("attendees").on("value", (snap) => {
+      console.log('onAttendees', snap.val());
+        this.attendees = {};
         this.attendees = snap.val();
+        console.log('this.attendees',this.attendees);
       });
 
     dbRoom.child(this.roomName).child("attendees").on("child_changed", (snap) => {
@@ -74,6 +77,10 @@ class RoomStore {
   }
 }
 
-let store = new RoomStore();
+let store = window.roomStore = new RoomStore();
 
 export default store;
+
+autorun(() => {
+  //console.log(store.attendees);
+})

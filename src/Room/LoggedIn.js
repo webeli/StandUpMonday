@@ -25,15 +25,20 @@ const styles = {
   }
 }
 
-@inject('globalStore', 'roomStore')
+@inject('globalStore', 'roomStore', 'routing')
 @observer
 class LoggedIn extends Component {
 
   constructor(props) {
     super(props);
     props.roomStore.addToAttendees(this.props.globalStore.user);
-    props.roomStore.onAttendees();
+    props.roomStore.onAttendees(this.props.routing.location.pathname);
     props.roomStore.onAttendee(this.props.globalStore.user);
+  }
+
+  componentWillMount() {
+    console.log(this.props.roomStore.attendees);
+    this.props.roomStore.attendees = {};
   }
 
   standingUp() {
@@ -45,6 +50,7 @@ class LoggedIn extends Component {
   }
 
   render() {
+    //console.log('this.props.roomStore.attendees', this.props.roomStore.attendees);
     const attendees = this.props.roomStore.attendees || null;
 
     let total = 0;
