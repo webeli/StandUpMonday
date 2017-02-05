@@ -11,20 +11,18 @@ export function getToday() {
 }
 
 class RoomStore {
-  @observable user;
   @observable standingDate;
   @observable sittingDate;
 
   @observable roomName = '';
   @observable roomFound = false;
-  @observable attendees = {};
+  @observable attendees = null;
   @observable dateToday = getToday();
 
   checkRoom(roomName) {
     dbRoom.child(roomName).once('value', (snap) => {
       if (snap.exists()) {
         this.roomName = roomName;
-        console.log('this.roomName',this.roomName);
         this.roomFound = true;
       } else {
         browserHistory.push(`/`);
@@ -32,10 +30,10 @@ class RoomStore {
     });
   }
 
-  addToAttendees(user) {
-    dbRoom.child(this.roomName).child("attendees").child(user.uid).once("value", (snap) => {
+  addToAttendees(user, pathname) {
+    db.child(pathname).child("attendees").child(user.uid).once("value", (snap) => {
       if (!snap.val()) {
-        dbRoom.child(this.roomName).child("attendees").child(user.uid).set({
+        db.child(pathname).child("attendees").child(user.uid).set({
           displayName: user.displayName ? user.displayName : user.email
         });
       } else {
@@ -45,23 +43,22 @@ class RoomStore {
     });
   }
 
-  onAttendee(user) {
-    dbRoom.child(this.roomName).child("attendees").child(user.uid).on("value", (attendee) => {
+  onAttendee(user, pathname) {
+    db.child(pathname).child("attendees").child(user.uid).on("value", (attendee) => {
       if (attendee.val()) {
         this.standingDate = attendee.val().standingDate;
         this.sittingDate = attendee.val().sittingDate;
+      } else {
+        this.standingDate = null;
+        this.sittingDate = null;
       }
     });
   }
 
   onAttendees(pathname) {
-    console.log('pathname', pathname)
     db.child(pathname).child("attendees").on("value", (snap) => {
-      console.log('onAttendees', snap.val());
-        this.attendees = {};
-        this.attendees = snap.val();
-        console.log('this.attendees',this.attendees);
-      });
+      this.attendees = snap.val();
+    });
 
     dbRoom.child(this.roomName).child("attendees").on("child_changed", (snap) => {
       // print out history

@@ -31,14 +31,9 @@ class LoggedIn extends Component {
 
   constructor(props) {
     super(props);
-    props.roomStore.addToAttendees(this.props.globalStore.user);
+    props.roomStore.addToAttendees(this.props.globalStore.user, this.props.routing.location.pathname);
     props.roomStore.onAttendees(this.props.routing.location.pathname);
-    props.roomStore.onAttendee(this.props.globalStore.user);
-  }
-
-  componentWillMount() {
-    console.log(this.props.roomStore.attendees);
-    this.props.roomStore.attendees = {};
+    props.roomStore.onAttendee(this.props.globalStore.user, this.props.routing.location.pathname);
   }
 
   standingUp() {
@@ -50,8 +45,7 @@ class LoggedIn extends Component {
   }
 
   render() {
-    //console.log('this.props.roomStore.attendees', this.props.roomStore.attendees);
-    const attendees = this.props.roomStore.attendees || null;
+    let attendees = this.props.roomStore.attendees;
 
     let total = 0;
     const mappedAttendees = attendees && Object.keys(attendees).map((key) => {
