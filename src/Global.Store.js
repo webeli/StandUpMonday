@@ -7,7 +7,6 @@ class GlobalStore {
 
   checkAuth() {
     fbAuth.onAuthStateChanged((user) => {
-      //console.log('user', user)
       if (user) {
         this.user = user;
         this.loggedIn = true;
@@ -18,12 +17,22 @@ class GlobalStore {
   }
 
   signIn(email, password) {
-    //console.log(email, password);
     fbAuth.signInWithEmailAndPassword(email, password).then((success) => {
-      this.loggedIn = true;
+
     }).catch(function (error) {
       console.error('ERROR: ', error);
     })
+  }
+
+  createUser(newUser) {
+    fbAuth.createUserWithEmailAndPassword(newUser.email, newUser.password).then((user) => {
+      user.updateProfile({
+        displayName: newUser.displayName,
+        photoURL: "http://www.themediaant.com/images/icon-profile.png"
+      })
+    }).catch((error) => {
+      console.log('ERROR: ', error);
+    });
   }
 
   signOut() {

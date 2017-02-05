@@ -60,7 +60,6 @@ class RoomStore {
     .orderByChild("standingDate")
     .equalTo(dateNow)
     .on("value", (snap) => {
-      console.log(snap.val());
       this.attendees = snap.val();
     });
 
