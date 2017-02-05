@@ -45,7 +45,7 @@ class LoggedIn extends Component {
     const mappedAttendees = Object.keys(attendees).map((key) => {
       return (
         <li key={key}>
-          {attendees[key].displayName}
+          {(attendees[key].standingDate === getToday() && attendees[key].sittingDate !== getToday()) ? "(grön)" : "(röd)"} - {attendees[key].displayName}
         </li>
       );
     })
