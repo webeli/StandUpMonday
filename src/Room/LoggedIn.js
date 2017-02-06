@@ -10,7 +10,6 @@ class LoggedIn extends Component {
 
   constructor(props) {
     super(props);
-    //props.roomStore.addToAttendees(this.props.globalStore.user, this.props.routing.location.pathname);
     props.roomStore.onAttendees(this.props.routing.location.pathname, this.props.roomStore.dateToday);
     props.roomStore.onAttendee(this.props.globalStore.user, this.props.routing.location.pathname);
   }
@@ -33,7 +32,7 @@ class LoggedIn extends Component {
       total = isStanding ? total + 1 : total;
 
       return (
-        <Col span={14} offset={10} key={key} style={{ textAlign: 'left' }}>
+        <Col xs={{ span: 24 }} lg={{ span: 14, offset: 10 }} key={key} style={{ textAlign: 'left' }}>
           <Badge status={isStanding ? "success" : "error"} />
           <span className="head-example">{attendees[key].displayName}</span>
         </Col>
@@ -42,10 +41,10 @@ class LoggedIn extends Component {
 
     return this.props.roomStore.roomFound && (
       <Row type="flex" justify="space-between" align="middle" style={{ textAlign: 'center', marginTop: '20px' }}>
-        <Col span={8}>
+        <Col xs={{ span: 14, offset: 8 }} lg={{ span: 8 }}>
           {mappedAttendees}
         </Col>
-        <Col span={8}>
+        <Col xs={{ span: 24 }} lg={{ span: 8 }}>
           {this.props.roomStore.standingDate !== getToday() &&
             <Button type="primary" onClick={() => this.standingUp()}>I'M STANDING!</Button>}
 
@@ -55,7 +54,7 @@ class LoggedIn extends Component {
           {this.props.roomStore.standingDate === getToday() && this.props.roomStore.sittingDate === getToday() &&
             <p>Good work today!</p>}
         </Col>
-        <Col span={8}>
+        <Col xs={{ span: 24 }} lg={{ span: 8 }}>
           {total} Attendees left
         </Col>
       </Row>
