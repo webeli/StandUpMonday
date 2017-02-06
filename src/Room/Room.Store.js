@@ -32,19 +32,6 @@ class RoomStore {
     });
   }
 
-  addToAttendees(user, pathname) {
-    db.child(pathname).child("attendees").child(user.uid).once("value", (snap) => {
-      if (!snap.val()) {
-        db.child(pathname).child("attendees").child(user.uid).set({
-          displayName: user.displayName ? user.displayName : user.email
-        });
-      } else {
-        this.standingDate = snap.val().standingDate;
-        this.sittingDate = snap.val().sittingDate;
-      }
-    });
-  }
-
   onAttendee(user, pathname) {
     db.child(pathname).child("attendees").child(user.uid).on("value", (attendee) => {
       if (attendee.val()) {
@@ -64,10 +51,6 @@ class RoomStore {
     .on("value", (snap) => {
       this.attendees = snap.val();
     });
-
-    db.child(pathname).child("attendees").on("child_changed", (snap) => {
-      // print out history
-    })
   }
 
   sittingDown(user, pathname) {
@@ -75,7 +58,17 @@ class RoomStore {
   }
 
   standingUp(user, pathname) {
-    db.child(pathname).child("attendees").child(user.uid).update({ standingDate: this.dateToday });
+    db.child(pathname).child("attendees").child(user.uid).set({  
+        displayName: user.displayName ? user.displayName : user.email,
+        standingDate: this.dateToday  
+    });
+  }
+
+  onAttendeesUpdate(pathname, dateNow) {
+    db.child(pathname).child("attendees").on("child_changed", (snap) => {
+      console.log(snap.val());
+      // print out history
+    })
   }
 }
 
