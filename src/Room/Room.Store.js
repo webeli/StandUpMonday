@@ -10,6 +10,14 @@ export function getToday() {
   return year + "-" + month + "-" + day;
 }
 
+export function getTimeStamp() {
+  const dateObj = new Date();
+  const hours = dateObj.getHours();
+  const minutes = dateObj.getMinutes();
+  const seconds = dateObj.getSeconds();
+  return `${hours}:${minutes}:${seconds}`;
+}
+
 class RoomStore {
   @observable standingDate;
   @observable sittingDate;
@@ -18,6 +26,8 @@ class RoomStore {
   @observable roomFound = false;
   @observable attendees = null;
   @observable dateToday = getToday();
+
+  @observable logs = [];
 
   @observable displayNewUserForm = false;
 
@@ -53,8 +63,22 @@ class RoomStore {
     });
   }
 
+  onLogs(pathname) {
+    db.child(pathname).child("logs").child(this.dateToday).on("child_added", (log) => {
+      this.logs.push({key: log.key, value: log.val()});
+    });
+  }
+
   sittingDown(user, pathname) {
     db.child(pathname).child("attendees").child(user.uid).update({ sittingDate: this.dateToday });
+    
+    const logMsg = {
+      displayName: user.displayName ? user.displayName : user.email,
+      body: "gave up at",
+      timestamp: getTimeStamp()
+    };
+
+    db.child(pathname).child("logs").child(this.dateToday).push(logMsg);
   }
 
   standingUp(user, pathname) {
@@ -62,13 +86,6 @@ class RoomStore {
         displayName: user.displayName ? user.displayName : user.email,
         standingDate: this.dateToday  
     });
-  }
-
-  onAttendeesUpdate(pathname, dateNow) {
-    db.child(pathname).child("attendees").on("child_changed", (snap) => {
-      console.log(snap.val());
-      // print out history
-    })
   }
 }
 
